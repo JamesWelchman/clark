@@ -1,0 +1,17 @@
+Name: battery
+
+Description: Battery Status, Charging/Discharging and current charge.
+
+Colors:
+   - Grey/White when charging (toggle click event)
+   - White when discharging
+   - Yellow when discharging + low
+   - Red when discharging + critically low
+
+Click Events:
+   - Button1 to toggle Grey/White color when charging
+
+UpdateFrequency: 1000
+
+Constants:
+   ProcPath: /sys/class/power_supply/BAT0/{status,charge_full,charge_now}
