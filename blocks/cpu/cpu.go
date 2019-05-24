@@ -2,7 +2,6 @@ package cpu
 
 import (
 	"fmt"
-	"os"
 	"time"
 
 	"clark/colors"
@@ -23,10 +22,10 @@ func updateSmall(block *protocol.Block, load float64) {
 	block.FullText = fmt.Sprintf("cpu [%.2f]", load)
 }
 
-func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) {
+func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) error {
 	cpuStatus, err := NewCpuStatus()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "couldn't get cpu load [%v]\n", err)
+		return fmt.Errorf("couldn't get cpu load :: %v", err)
 	}
 
 	displayAll := false
@@ -42,8 +41,8 @@ func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *pr
 
 			loads, err := cpuStatus.GetLoads()
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "couldn't get cpu load [%v]\n", err)
-				continue
+				err = fmt.Errorf("couldn't get cpu load :: %v", err)
+				return err
 			}
 			block := protocol.Block(*defaultBlock)
 

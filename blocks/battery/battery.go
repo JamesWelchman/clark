@@ -2,7 +2,6 @@ package battery
 
 import (
 	"fmt"
-	"os"
 	"time"
 
 	"clark/colors"
@@ -42,16 +41,14 @@ func updateCharge(block *protocol.Block, chargeFull float64) error {
 	return nil
 }
 
-func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) {
-	defer fmt.Fprintln(os.Stderr, "quitting battery goroutine")
-
+func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) error {
 	defaultColor := colors.Grey
 
 	// Populate chargeFull
 	chargeFull, err := getFullCharge()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "unable to get full battery charge %v\n", err)
-		return
+		err = fmt.Errorf("unable to get full battery charge :: %v", err)
+		return err
 	}
 
 	throttle := time.After(0)
@@ -62,8 +59,7 @@ func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *pr
 			block.Color = defaultColor
 
 			if err := updateCharge(&block, chargeFull); err != nil {
-				fmt.Fprintf(os.Stderr, "%v\n", err)
-				continue
+				return err
 			}
 
 			out <- &block

@@ -2,7 +2,6 @@ package memory
 
 import (
 	"fmt"
-	"os"
 	"time"
 
 	"clark/colors"
@@ -22,7 +21,7 @@ func update(block *protocol.Block) error {
 	return nil
 }
 
-func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) {
+func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) error {
 	color := colors.Grey
 
 	throttle := time.After(0)
@@ -31,9 +30,8 @@ func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *pr
 		case <-throttle:
 			block := protocol.Block(*defaultBlock)
 			if err := update(&block); err != nil {
-				fmt.Fprintf(os.Stderr, "couldn't update memory [%v\n", err)
-				throttle = time.After(10 * time.Second)
-				continue
+				err = fmt.Errorf("couldn't update memory :: %v", err)
+				return err
 			}
 			block.Color = color
 			out <- &block

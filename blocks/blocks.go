@@ -11,7 +11,7 @@ import (
 // Implementations of RunFunc should not return and must do event looping themselves.
 // Each instance of RunFunc is expected to take ownership and may freely modify the
 // the variables passed to it.
-type RunFunc func(*protocol.Block, <-chan *protocol.Click, chan<- *protocol.Block)
+type RunFunc func(*protocol.Block, <-chan *protocol.Click, chan<- *protocol.Block) error
 
 // Block is the structure used by clark/conf/conf.go to specify
 // exactly one block on i3bar.

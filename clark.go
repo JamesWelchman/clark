@@ -32,7 +32,7 @@ func main() {
 
 		blockChannels = append(blockChannels, b)
 
-		go block.Run(conf.NewBlock(), c, b)
+		go clarkio.RunBlock(block.Run, c, b)
 	}
 
 	// Start listening on stdin

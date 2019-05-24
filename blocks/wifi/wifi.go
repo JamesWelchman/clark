@@ -2,7 +2,6 @@ package wifi
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 	"time"
 
@@ -23,6 +22,7 @@ type runDetails struct {
 	Down         float64
 	Up           float64
 	Color        string
+	err          error
 }
 
 func (r *runDetails) ToggleColor() {
@@ -65,8 +65,8 @@ func notConnected(r *runDetails, c *wifibytes.Client) stateFn {
 		case <-ticker.C:
 			r.Down, r.Up, err = c.GetKilobitsPerSecond()
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "couldn't get speeds :: %v\n", err)
-				continue
+				r.err = fmt.Errorf("couldn't get speed :: %v", err)
+				return nil
 			}
 
 			if r.RecentTraffic() {
@@ -90,8 +90,8 @@ func connected(r *runDetails, c *wifibytes.Client) stateFn {
 		case <-ticker.C:
 			r.Down, r.Up, err = c.GetKilobitsPerSecond()
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "couldn't get speeds :: %v\n", err)
-				continue
+				r.err = fmt.Errorf("couldn't get speeds :: %v", err)
+				return nil
 			}
 			r.SendConnected()
 
@@ -125,8 +125,8 @@ func testConnection(r *runDetails, c *wifibytes.Client) stateFn {
 		case <-ticker.C:
 			r.Down, r.Up, err = c.GetKilobitsPerSecond()
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "couldn't get speeds :: %v\n", err)
-				continue
+				r.err = fmt.Errorf("couldn't get speeds :: %v", err)
+				return nil
 			}
 
 			if r.RecentTraffic() {
@@ -155,11 +155,11 @@ func testConnection(r *runDetails, c *wifibytes.Client) stateFn {
 	return notConnected
 }
 
-func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) {
+func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) error {
 	c, err := wifibytes.NewClient(10, device)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "couldn't create client :: %v\n", err)
-		return
+		err = fmt.Errorf("couldn't create client :: %v", err)
+		return err
 	}
 
 	r := &runDetails{
@@ -172,5 +172,8 @@ func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *pr
 	state := notConnected
 	for {
 		state = state(r, c)
+		if r.err != nil {
+			return r.err
+		}
 	}
 }

@@ -15,7 +15,7 @@ func currentTime() string {
 }
 
 // Run will write the current time once per second
-func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) {
+func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) error {
 	for {
 		select {
 		case <-time.After(time.Second):
@@ -27,4 +27,6 @@ func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *pr
 			continue
 		}
 	}
+
+	return nil
 }
