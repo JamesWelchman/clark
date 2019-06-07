@@ -27,6 +27,4 @@ func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *pr
 			continue
 		}
 	}
-
-	return nil
 }
