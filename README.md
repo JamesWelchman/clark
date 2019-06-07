@@ -24,3 +24,9 @@ Clark has an asynchronous architecture.
 
    - Strictly one goroutine per block
    - Click events are handled in the same goroutine as block writing
+
+
+## TODO
+   1. ArchLinux pacman block
+   2. i3 current-window and current-layout block
+   3. PulseAudio block
