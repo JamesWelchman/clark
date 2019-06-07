@@ -3,6 +3,7 @@ package wifi
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 	"time"
 
 	"clark/colors"
@@ -12,7 +13,8 @@ import (
 )
 
 const (
-	device = "wlp2s0"
+	device     = "wlp2s0"
+	textLength = len("down[9999.99 kbs] up[99.99]")
 )
 
 type runDetails struct {
@@ -35,8 +37,15 @@ func (r *runDetails) ToggleColor() {
 
 func (r *runDetails) SendConnected() {
 	block := protocol.Block(*r.DefaultBlock)
+
+	// Set the text
 	text := fmt.Sprintf("down[%.2f kbs] up[%.2f kbs]", r.Down, r.Up)
+	if shortLength := textLength - len(text); shortLength > 0 {
+		text += strings.Repeat(" ", shortLength)
+	}
+
 	block.FullText = text
+	block.MinWidth = textLength
 	block.Color = r.Color
 	r.BlockChannel <- &block
 }
