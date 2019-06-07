@@ -3,6 +3,8 @@
 
 Clark is a daemon implementing the i3bar protocol.
 
+[godoc](https://godoc.org/github.com/JamesWelchman/clark)
+
 ## Overview
 
 Clark implements 100% of the i3bar protocol, including click events.
