@@ -9,4 +9,5 @@ const (
 	Yellow = "#ffb86c"
 	Green  = "#50fa7b"
 	White  = "#f8f8f2"
+	Blue   = "#6272a4"
 )
