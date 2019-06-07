@@ -5,11 +5,12 @@ import (
 	"time"
 
 	"clark/colors"
+	memClient "clark/pkg/memory"
 	"clark/protocol"
 )
 
 func update(block *protocol.Block) error {
-	free, total, err := getMemory()
+	free, total, err := memClient.GetMemory()
 	if err != nil {
 		return err
 	}

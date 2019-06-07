@@ -76,6 +76,10 @@ PARSE_MEMORY_LINES:
 		return 0, 0, err
 	}
 
+	// Change the units to GigaBytes
+	memAvailable /= 1048576
+	memTotal /= 1048576
+
 	return
 }
 
@@ -90,7 +94,7 @@ func parseLine(line string) (string, error) {
 	amount := strings.TrimLeft(fields[1], "\t ")
 
 	// Next split on the space between the amout and the units
-	fields = strings.Split(amount, ":")
+	fields = strings.Split(amount, " ")
 	if fields[1] != "kB" {
 		return "", errors.New("memory not in kB")
 	}
