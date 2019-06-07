@@ -1,0 +1,11 @@
+version: 2
+jobs:
+        build:
+                machine: true
+                environment:
+                        GOPATH: /tmp/go
+                steps:
+                        - run: go get github.com/jameswelchman/clark
+                        - run: go build github.com/jameswelchman/clark
+                        - run: go fmt github.com/jameswelchman/clark/...
+                        - run: go vet github.com/jameswelchman/clark/...
