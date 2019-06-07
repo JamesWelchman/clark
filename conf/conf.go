@@ -10,6 +10,7 @@ import (
 	"github.com/jameswelchman/clark/blocks/clock"
 	"github.com/jameswelchman/clark/blocks/cpu"
 	"github.com/jameswelchman/clark/blocks/memory"
+	"github.com/jameswelchman/clark/blocks/pacman"
 	"github.com/jameswelchman/clark/blocks/wifi"
 	"github.com/jameswelchman/clark/colors"
 	"github.com/jameswelchman/clark/protocol"
@@ -83,6 +84,11 @@ var AllBlocks = [...]*blocks.Block{
 		Name:     "cpu",
 		Instance: "1",
 		Run:      cpu.Run,
+	},
+	&blocks.Block{
+		Name:     "pacman",
+		Instance: "1",
+		Run:      pacman.Run,
 	},
 	&blocks.Block{
 		Name:     "battery",

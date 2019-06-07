@@ -18,6 +18,7 @@ Clark implements all the vanilla blocks we would expect in a status bar:
    - Memory Usage
    - Network I/O
    - Clock
+   - Pacman Updates Block
 
 Clark has no configuration files and is designed to be small and hackable.
 It has a suckless style config.h (conf/conf.go) and (colors/colors.go).
@@ -61,6 +62,5 @@ And the contents of `/home/james/bin/clark_debug.sh`.
 
 
 ## TODO
-   1. ArchLinux pacman block
-   2. i3 current-window and current-layout block
-   3. PulseAudio block
+   1. i3 current-window and current-layout block
+   2. PulseAudio block

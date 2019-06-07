@@ -14,8 +14,7 @@ import (
 )
 
 var cmd = [...]string{
-	"/usr/bin/sudo",
-	"pacman",
+	"/usr/bin/pacman",
 	"-Qu",
 }
 
@@ -29,7 +28,16 @@ func runPacman() (string, error) {
 	}
 	err := cmd.Run()
 	if err != nil {
-		return "", err
+		exitError, ok := err.(*exec.ExitError)
+		if !ok {
+			return "", err
+		}
+
+		if exitError.ExitCode() == 1 {
+			return "", nil
+		}
+
+		return "", exitError
 	}
 
 	return writer.String(), nil
