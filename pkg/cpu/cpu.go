@@ -129,7 +129,7 @@ func newCpuTimeStat(cpuLine string) (*cpuTimeStat, error) {
 		}
 
 		// The idle field
-		if i == 3 {
+		if i == 4 {
 			c.idle = val
 			continue
 		}
@@ -162,12 +162,9 @@ func buildAllCpuTimeStats() ([]*cpuTimeStat, error) {
 }
 
 func computeLoad(c1, c2 *cpuTimeStat) (float64, error) {
-	t1 := c1.busy + c1.idle
-	t2 := c2.busy + c2.idle
+	busy := c2.busy - c1.busy
+	idle := c2.idle - c1.idle
 
-	diff := t2 - t1
-	idleDiff := c2.idle - c1.idle
-
-	ratio := diff / (diff + idleDiff)
+	ratio := busy / (busy + idle)
 	return ratio * 100, nil
 }
