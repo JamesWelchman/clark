@@ -5,83 +5,89 @@ import (
 	"time"
 
 	"clark/colors"
+	"clark/pkg/bat"
 	"clark/protocol"
 )
 
-func updateCharge(block *protocol.Block, chargeFull float64) error {
-	// status
-	status, err := getStatus()
-	if err != nil {
-		return fmt.Errorf("unable to get battery status %v\n", err)
-	}
+type runInfo struct {
+	color         string
+	chargePercent float64
+	status        string
+}
 
-	// charge now
-	chargeNow, err := getCurrentCharge()
-	if err != nil {
-		return fmt.Errorf("unable to get battery status %v\n", err)
-	}
-
-	// percentage
-	chargePercentage := calcChargePercentage(chargeNow, chargeFull)
+func (r *runInfo) BuildBlock(defaultBlock *protocol.Block) *protocol.Block {
+	block := protocol.Block(*defaultBlock)
 
 	// Color
-	if status == "Discharging" {
+	block.Color = r.color
+	if r.status == "Discharging" {
 		block.Color = colors.White
 
-		if chargePercentage < 40 {
+		if r.chargePercent < 40 {
 			block.Color = colors.Yellow
 		}
 
-		if chargePercentage < 10 {
+		if r.chargePercent < 10 {
 			block.Color = colors.Red
 		}
 	}
 
-	block.FullText = fmt.Sprintf("%s %d%%", status, chargePercentage)
+	// Text
+	block.FullText = fmt.Sprintf("%s %.0f%%", r.status, r.chargePercent)
+	return &block
+}
+
+func (r *runInfo) Update() error {
+	var err error
+
+	r.status, err = bat.GetStatus()
+	if err != nil {
+		return fmt.Errorf("couldn't get battery status :: %v", err)
+	}
+
+	r.chargePercent, err = bat.GetChargePercentage()
+	if err != nil {
+		return fmt.Errorf("couldn't get battery charge :: %v", err)
+	}
+
 	return nil
 }
 
-func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) error {
-	defaultColor := colors.Grey
+func (r *runInfo) ToggleColor() {
+	if r.color == colors.Grey {
+		r.color = colors.White
+	} else {
+		r.color = colors.Grey
+	}
+}
 
-	// Populate chargeFull
-	chargeFull, err := getFullCharge()
-	if err != nil {
-		err = fmt.Errorf("unable to get full battery charge :: %v", err)
-		return err
+func Run(defaultBlock *protocol.Block, in <-chan *protocol.Click, out chan<- *protocol.Block) error {
+	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
+
+	run := &runInfo{
+		color: colors.Grey,
 	}
 
-	throttle := time.After(0)
 	for {
 		select {
-		case <-throttle:
-			block := protocol.Block(*defaultBlock)
-			block.Color = defaultColor
-
-			if err := updateCharge(&block, chargeFull); err != nil {
+		case <-ticker.C:
+			err := run.Update()
+			if err != nil {
 				return err
 			}
 
-			out <- &block
-			throttle = time.After(time.Second)
+			block := run.BuildBlock(defaultBlock)
+			out <- block
 
 		case click := <-in:
 			if click.Button != 1 {
 				continue
 			}
 
-			if defaultColor == colors.Grey {
-				defaultColor = colors.White
-			} else {
-				defaultColor = colors.Grey
-			}
-
-			throttle = time.After(0)
+			run.ToggleColor()
+			block := run.BuildBlock(defaultBlock)
+			out <- block
 		}
 	}
-}
-
-func calcChargePercentage(now, full float64) int {
-	percentage := (now / full) * 100
-	return int(percentage)
 }

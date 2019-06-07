@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const filePath = "/sys/class/power_supply_BAT0"
+const filePath = "/sys/class/power_supply/BAT0"
 
 // GetStatus will read the status file.
 // Possible returns are "Charging", "Discharging" and "Unknown"
