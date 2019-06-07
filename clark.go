@@ -9,9 +9,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"clark/clarkio"
-	"clark/conf"
-	"clark/protocol"
+	"github.com/jameswelchman/clark/clarkio"
+	"github.com/jameswelchman/clark/conf"
+	"github.com/jameswelchman/clark/protocol"
 )
 
 func main() {

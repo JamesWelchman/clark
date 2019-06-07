@@ -5,14 +5,14 @@ for details. This file was inspired by suckless config.h - full credit to them!
 package conf
 
 import (
-	"clark/blocks"
-	"clark/blocks/battery"
-	"clark/blocks/clock"
-	"clark/blocks/cpu"
-	"clark/blocks/memory"
-	"clark/blocks/wifi"
-	"clark/colors"
-	"clark/protocol"
+	"github.com/jameswelchman/clark/blocks"
+	"github.com/jameswelchman/clark/blocks/battery"
+	"github.com/jameswelchman/clark/blocks/clock"
+	"github.com/jameswelchman/clark/blocks/cpu"
+	"github.com/jameswelchman/clark/blocks/memory"
+	"github.com/jameswelchman/clark/blocks/wifi"
+	"github.com/jameswelchman/clark/colors"
+	"github.com/jameswelchman/clark/protocol"
 )
 
 // Header is a string which must be the first line sent to i3bar as

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"clark/colors"
-	"clark/pkg/bat"
-	"clark/protocol"
+	"github.com/jameswelchman/clark/colors"
+	"github.com/jameswelchman/clark/pkg/bat"
+	"github.com/jameswelchman/clark/protocol"
 )
 
 type runInfo struct {

@@ -6,8 +6,8 @@ package clock
 import (
 	"time"
 
-	"clark/colors"
-	"clark/protocol"
+	"github.com/jameswelchman/clark/colors"
+	"github.com/jameswelchman/clark/protocol"
 )
 
 func currentTime() string {

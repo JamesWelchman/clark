@@ -4,7 +4,7 @@ blocks is the parent package to all block implementations.
 package blocks
 
 import (
-	"clark/protocol"
+	"github.com/jameswelchman/clark/protocol"
 )
 
 // RunFunc is the function signature which must be exported by individual packages.

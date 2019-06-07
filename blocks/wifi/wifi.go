@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"clark/colors"
-	"clark/protocol"
+	"github.com/jameswelchman/clark/colors"
+	"github.com/jameswelchman/clark/protocol"
 
-	"clark/blocks/wifi/wifibytes"
+	"github.com/jameswelchman/clark/blocks/wifi/wifibytes"
 )
 
 const (

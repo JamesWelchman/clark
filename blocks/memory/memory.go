@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"clark/colors"
-	memClient "clark/pkg/memory"
-	"clark/protocol"
+	"github.com/jameswelchman/clark/colors"
+	memClient "github.com/jameswelchman/clark/pkg/memory"
+	"github.com/jameswelchman/clark/protocol"
 )
 
 func update(block *protocol.Block) error {

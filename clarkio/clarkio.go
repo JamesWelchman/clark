@@ -13,8 +13,8 @@ import (
 	"os"
 	"time"
 
-	"clark/conf"
-	"clark/protocol"
+	"github.com/jameswelchman/clark/conf"
+	"github.com/jameswelchman/clark/protocol"
 )
 
 // ReadClicks implements an event loop and will never return.

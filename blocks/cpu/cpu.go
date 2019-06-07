@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"clark/colors"
-	cpuClient "clark/pkg/cpu"
-	"clark/protocol"
+	"github.com/jameswelchman/clark/colors"
+	cpuClient "github.com/jameswelchman/clark/pkg/cpu"
+	"github.com/jameswelchman/clark/protocol"
 )
 
 const (
