@@ -3,7 +3,9 @@
 
 Clark is a daemon implementing the i3bar protocol.
 
-[godoc](https://godoc.org/github.com/JamesWelchman/clark)
+Docs: [godoc](https://godoc.org/github.com/JamesWelchman/clark)
+
+Build: [![CircleCI](https://circleci.com/gh/JamesWelchman/clark/tree/master.svg?style=svg)](https://circleci.com/gh/JamesWelchman/clark/tree/master)
 
 ## Overview
 
@@ -24,6 +26,38 @@ Clark has an asynchronous architecture.
 
    - Strictly one goroutine per block
    - Click events are handled in the same goroutine as block writing
+
+
+## Install
+To install clark
+
+```bash
+$ go get github.com/jameswelchman/clark
+```
+
+This should clone this repo and build a clark binary.
+See documentation about go get for more details.
+It *probably* installed clark to `$HOME/go/bin/clark`.
+
+
+## Debugging
+All errors are written to stderr.
+This is a snippet from my i3 config. Note the commented out line.
+
+```
+bar {
+   status_command /home/james/go/bin/clark
+   # status_command /home/james/bin/clark_debug.sh
+}
+```
+
+And the contents of `/home/james/bin/clark_debug.sh`.
+
+```bash
+#!/usr/bin/env bash
+
+/home/james/go/bin/clark 2> /tmp/clark_error.log
+```
 
 
 ## TODO
